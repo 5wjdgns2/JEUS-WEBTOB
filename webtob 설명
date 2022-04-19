@@ -1,0 +1,167 @@
+WEBTOB란? 
+
+클라이언트의 요청을 처리하는 TMAX 웹서버 플랫폼
+
+
+
+WEBTOB 설정 파일 내용 
+
+'''
+*NODE
+
+#독루트는 소스가 있는 webcontent를 설정,기본 포트 80,제우스 통신포트 9900,핸들러3개(9900,9901,9902)
+
+testoutweb1         
+WEBTOBDIR="C:/TmaxSoft/WebtoB",
+SHMKEY = 54000,
+DOCROOT="D:/Workspace/Test/WebContent",
+PORT = "80",
+ServiceOrder = "ext,uri",
+JSVPORT=9900,
+HTH = 3,
+NODENAME = "$(NODENAME)",
+OGGING = "log1",
+ERRORLOG = "log2"
+
+'''
+
+'''
+#t1.test.com에서 HTTPS 프로토콜을 사용하기 위한 SSL 설정부분,기본443포트,
+
+*VHOST
+
+ssl1            
+
+NODENAME = "testoutweb1",
+
+DOCROOT="D:/Workspace/Test/WebContent",
+
+HOSTNAME = "t1.test.com",
+
+#HostAlias = "222.236.47.63",
+
+IndexName = "index.html",
+
+ServiceOrder = "ext,uri",
+
+PORT = "443",
+
+SSLFLAG = Y,
+
+SSLNAME = "ssl"
+
+#LOGGING="log_safe1",
+
+#ERRORLOG="log_safe2"
+
+ 
+
+#www.test.com을 사용하기 위한 기본 80포트 설정
+
+vh_safe         
+
+NODENAME = "testoutweb1",
+
+DOCROOT="D:/Workspace/Test2/WebContent",
+
+HOSTNAME = "www.test.com",
+
+#HostAlias = "www.sso1.com,www.sso2.com",
+
+IndexName = "index.html",
+
+ServiceOrder = "ext,uri",
+
+PORT = "80",
+
+LOGGING="log_safe1",
+
+ERRORLOG="log_safe2"
+
+ 
+
+#www.test.com에서 HTTPS 프로토콜을 사용하기 위한 SSL 설정부분,기본443포트
+
+vh_safe_ssl  
+
+NODENAME = "testoutweb1",
+
+DOCROOT="D:/Workspace/Test2/WebContent",
+
+HOSTNAME = "www.test.com",
+
+#HostAlias = "www.sso1.com,www.sso2.com",
+
+IndexName = "index.html",
+
+ServiceOrder = "ext,uri",
+
+PORT = "443",
+
+SSLFLAG = Y,
+
+SSLNAME = "ssl",
+
+LOGGING="log_safe1",
+
+ERRORLOG="log_safe2"
+
+ 
+
+#SSL 파일이 위치하는 경로설정
+
+*SSL
+
+ssl             
+
+CertificateFile = "C:/TmaxSoft/WebtoB/ssl/newreq.pem",
+
+CertificateKeyFile = "C:/TmaxSoft/WebtoB/ssl/newreq.pem",
+
+# CertificateChainFile = "C:/TmaxSoft/WebtoB/ssl/intermediate.pem",
+
+CACertificateFile = "C:/TmaxSoft/WebtoB/ssl/intermediate.pem",
+
+CACertificatePath = "C:/TmaxSoft/WebtoB/ssl"
+
+ 
+
+*SVRGROUP
+
+htmlg           NODENAME = "testoutweb1", SVRTYPE = HTML
+
+jsvg            NODENAME = "testoutweb1", SVRTYPE = JSV
+
+jsvg_safe       NODENAME = "testoutweb1", SVRTYPE = JSV,VHOSTNAME=vh_safe
+
+jsvg_safe2      NODENAME = "testoutweb1", SVRTYPE = JSV,VHOSTNAME=vh_safe_ssl
+
+ 
+
+ 
+
+*SERVER
+
+html            SVGNAME = htmlg, MinProc = 60, MaxProc = 100, ASQCount = 100
+
+MyGroup                    SVGNAME  = jsvg,  MinProc = 60,  MaxProc = 100, SvrChkTime=30
+
+MyGroup_safe    SVGNAME  = jsvg_safe,  MinProc = 60,  MaxProc = 100, SvrChkTime=30
+
+MyGroup_safe2   SVGNAME  = jsvg_safe2,  MinProc = 60,  MaxProc = 100, SvrChkTime=30
+
+'''
+
+
+
+
+
+
+
+
+
+
+
+
+
+
